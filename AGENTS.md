@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep primary app destinations as separate TanStack routes under the shared OctagonLive shell, because each screen is independently navigable and shareable.
+- Persist lightweight user interface preferences in browser storage, because this prototype has no connected backend.
