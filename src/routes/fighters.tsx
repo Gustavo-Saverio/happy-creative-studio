@@ -1,0 +1,32 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { BellRing, ChevronDown, Flame, History, Ruler, Star } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { OctagonShell, SectionTitle } from "@/components/octagon-shell";
+import { usePersistentState } from "@/hooks/use-persistent-state";
+
+const hero = "https://lh3.googleusercontent.com/aida-public/AB6AXuAiY3Q8mxJhFkGnLg6hy5UrR6SqlsD1uvN-rS0oM9eaPa5TCwtMjwMSfQdCapBH5a4-4lJF0nv1aMgSjMJl7XMZ0CQrnVgP1hTaY13FzrsVuIJwXgHfF3U_j1IBuTW4CCSQNxkYfAaPALNZCWT5pUyVhnQnbzDposqpNuSswTtIVfYewIikMaXGuHukxM9i_clDlgFcf6lTmUiJ1xzdbq-_Mx_DF7nCrJpMzRdwj9clZsA6mS4auKBL";
+
+export const Route = createFileRoute("/fighters")({ head: () => ({ meta: [{ title: "Alex Pereira — OctagonLive" }, { name: "description", content: "Perfil, cartel e métricas de combate de Alex Pereira." }, { property: "og:title", content: "Alex Pereira — OctagonLive" }, { property: "og:description", content: "Perfil, cartel e métricas de combate de Alex Pereira." }, { property: "og:type", content: "profile" }, { name: "twitter:card", content: "summary_large_image" }] }), component: FighterPage });
+
+function FighterPage() {
+  const [following, setFollowing] = usePersistentState("follow-pereira", false);
+  const [openFight, setOpenFight] = useState(0);
+  return <OctagonShell title="Lutadores">
+    <section className="relative -mx-4 -mt-4 h-[360px] overflow-hidden bg-cover bg-center px-4 pb-5" style={{ backgroundImage: `url(${hero})` }}><div className="absolute inset-0 bg-[linear-gradient(to_top,var(--background)_2%,transparent_62%)]"/><div className="relative flex h-full flex-col justify-between pt-4"><div className="flex justify-between"><span className="tag bg-muted text-secondary">● Cinturão meio-pesado</span><span className="tag bg-muted">🇧🇷 Brasil</span></div><div><span className="tag bg-secondary text-secondary-foreground">Campeão 93 kg / 205 lbs</span><h1 className="mt-2 font-display text-4xl font-bold uppercase">Alex Pereira <em className="text-xl text-primary">“Poatan”</em></h1><div className="mt-2 flex items-center gap-2 font-display text-[10px] font-bold uppercase"><span>Seq:</span>{["V • TKO","V • KO","V • TKO","V • Dec","V • KO"].map((x, index)=><b key={`${x}-${index}`} className="rounded-sm bg-tertiary px-2 py-1 text-background">{x}</b>)}<span className="text-tertiary"><Flame className="inline size-4"/> 5 seg</span></div></div></div></section>
+    <Button onClick={() => setFollowing(!following)} className="-mx-4 h-[72px] w-[calc(100%+2rem)] rounded-none font-display text-lg font-bold uppercase"><BellRing />{following ? "Seguindo • alerta ativo" : "Seguir & alerta de walkout"}</Button>
+    <section className="panel mt-4 p-4"><div className="flex justify-between"><span className="metric-label">Cartel profissional de MMA</span><span className="tag bg-muted text-tertiary">83% taxa KO/TKO</span></div><div className="mt-4 grid grid-cols-3 divide-x divide-border"><Record value="12" label="Vitórias (10 KOs)" color="text-tertiary"/><Record value="2" label="Derrotas" color="text-primary"/><Record value="0" label="Empates" color="text-accent-foreground"/></div><div className="mt-4 h-1.5 bg-[linear-gradient(to_right,var(--tertiary)_86%,var(--primary)_86%)]"/></section>
+    <SectionTitle icon={<Ruler/>} title="Tale of the tape" meta="Inspeção oficial"/>
+    <div className="grid grid-cols-2 gap-2"><Metric label="Envergadura" value="200" suffix="cm / 79.0”"/><Metric label="Altura" value="1,93" suffix="m / 6'4”"/><Metric label="Idade" value="37" suffix="anos (07/07/87)"/><Metric label="Postura" value="Destro" suffix="Orthodox"/></div>
+    <SectionTitle icon={<span>▥</span>} title="Métricas de combate" meta="Sub-segundo"/>
+    <section className="panel p-4"><MetricBar label="Golpes significativos / minuto" value="5.12" pct="80%"/><MetricBar label="Precisão golpes" value="63%" pct="63%"/><MetricBar label="Defesa golpes" value="52%" pct="52%"/><MetricBar label="Defesa quedas" value="74%" pct="74%"/></section>
+    <SectionTitle icon={<History/>} title="Histórico recente de lutas" meta="UFC defesas"/>
+    <div className="overflow-hidden rounded-lg">{[
+      ["Vs. Jiří Procházka 2", "UFC 303 • 29 Jun 2024 • T-Mobile Arena"], ["Vs. Jamahal Hill", "UFC 300 • 13 Abr 2024 • Main Event Histórico"], ["Vs. Jiří Procházka 1", "UFC 295 • 11 Nov 2023 • Conquista do Título"]
+    ].map((fight,i)=><article key={fight[0]} className="border-b border-border bg-card"><Button variant="ghost" onClick={()=>setOpenFight(openFight===i?-1:i)} className="h-auto w-full justify-start whitespace-normal rounded-none p-4 text-left"><span className="flex-1"><strong className="font-display text-xl uppercase">{fight[0]}</strong><b className="ml-3 font-display text-xs uppercase text-tertiary">Vitória</b><small className="block text-accent-foreground">{fight[1]}</small></span><ChevronDown className={openFight===i?"rotate-180 transition-transform":"transition-transform"}/></Button>{openFight===i&&<div className="grid grid-cols-3 border-t border-border bg-muted p-3 text-center"><Metric label="Método / tempo" value="TKO" suffix="R2 0:13"/><Metric label="Golpes sig." value="38/54" suffix="conectados"/><Metric label="Knockdowns" value="2" suffix="total"/></div>}</article>)}</div>
+    <blockquote className="my-5 border-l-2 border-primary bg-card p-4 text-sm text-accent-foreground">“Chama. Pronto para defender o cinturão a qualquer momento, em qualquer lugar.”</blockquote>
+  </OctagonShell>;
+}
+function Record({value,label,color}:{value:string;label:string;color:string}) { return <div className="px-2"><strong className={`font-display text-4xl ${color}`}>{value}</strong><small className="block font-display text-[10px] font-bold uppercase">{label}</small></div>; }
+function Metric({label,value,suffix}:{label:string;value:string;suffix:string}) { return <div className="metric-card"><span className="metric-label">{label}</span><strong className="metric-value">{value} <small className="text-xs text-accent-foreground">{suffix}</small></strong></div>; }
+function MetricBar({label,value,pct}:{label:string;value:string;pct:string}) { return <div className="mb-4 last:mb-0"><div className="flex items-end justify-between"><span className="metric-label">{label}</span><strong className="font-display text-2xl">{value}</strong></div><div className="mt-1 h-1.5 bg-nav"><i className="block h-full bg-tertiary" style={{width:pct}}/></div></div>; }
