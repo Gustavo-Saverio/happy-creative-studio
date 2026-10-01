@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Crosshair, Gavel, Timer, Vote } from "lucide-react";
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { OctagonShell } from "@/components/octagon-shell";
 
@@ -32,4 +33,4 @@ function Stats() { return <>
   <div className="mt-2 grid grid-cols-2 gap-2"><Duel icon={<Gavel/>} label="Quedas / Takedowns" left="0/1" right="1/3" note="Defesa Pereira: 67%"/><Duel icon={<Timer/>} label="Controle de solo" left="0:15" right="1:42" note="Vantagem Procházka"/></div>
   </>; }
 function Hit({ label, value, pct }: { label:string; value:string; pct:string }) { return <div><small className="text-[10px] text-accent-foreground">{label}</small><strong className="block text-xl text-primary">{value}</strong><small>{pct}</small></div>; }
-function Duel({ icon, label, left, right, note }: { icon:React.ReactNode; label:string; left:string; right:string; note:string }) { return <div className="metric-card font-display uppercase"><div className="flex items-center justify-between text-primary">{icon}<span className="text-[9px] font-bold text-accent-foreground">{label}</span></div><div className="mt-3 flex items-end justify-between"><strong className="text-2xl text-primary">{left}</strong><small>vs</small><strong className="text-2xl text-secondary">{right}</strong></div><div className="mt-1 h-1.5 bg-[linear-gradient(to_right,var(--primary)_25%,var(--secondary)_25%)]"/><small className="text-[9px]">{note}</small></div>; }
+function Duel({ icon, label, left, right, note }: { icon:ReactNode; label:string; left:string; right:string; note:string }) { return <div className="metric-card font-display uppercase"><div className="flex items-center justify-between text-primary">{icon}<span className="text-[9px] font-bold text-accent-foreground">{label}</span></div><div className="mt-3 flex items-end justify-between"><strong className="text-2xl text-primary">{left}</strong><small>vs</small><strong className="text-2xl text-secondary">{right}</strong></div><div className="mt-1 h-1.5 bg-[linear-gradient(to_right,var(--primary)_25%,var(--secondary)_25%)]"/><small className="text-[9px]">{note}</small></div>; }
